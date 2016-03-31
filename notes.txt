@@ -1,0 +1,8 @@
+* Install unity
+* Create a 2d-project
+* Make sure it's actually 2d or else just recreate it
+* Import a spritesheet
+* Split it (16x16 with 1 padding for me)
+* Remove anisotropic filtering if it's low-res i.e. bilinear->point
+* Drag a floor sprite into the scene, stretch its width
+* Give the floor a 2d box collider
