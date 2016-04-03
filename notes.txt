@@ -1,3 +1,5 @@
+- I'll be making a small, very simple 2d platformer from scratch.
+- I won't go into detail on every aspect but please feel free to ask questions if you want anything clarified.
 * Install unity
 * Create a 2d-project
 * Make sure it's actually 2d or else just recreate it
@@ -5,4 +7,19 @@
 * Split it (16x16 with 1 padding for me)
 * Remove anisotropic filtering if it's low-res i.e. bilinear->point
 * Drag a floor sprite into the scene, stretch its width
-* Give the floor a 2d box collider
+* Give the floor a 2d box collider component
+- The collider lets it collide with other objects that also have colliders.
+* Drag a player sprite into the scene, above the floor
+* Give it Rigidbody 2d and Polygon collider 2d components
+- The Rigidbody makes it affected by the unity physics e.g. makes it affected by gravity.
+- The Polygon collider is just like the box collider except that its edges can move around more liberally. When creating it unity tries to fit it to the sprite the best it can but you might have to adjust it yourself
+* Try pressing the play button, your character should land on the static ground
+* Go back into the scene view while the game is running. Drag the player around.
+* Stop the game
+- Notice that the player position gets reset when you stop the game. Very very common mistake to actually change stuff you want to keep while playing. There are ways of making the editor change colors more dramatically when playing.
+* Add a script component to eg. the Main Camera. See the repo for final code with comments.
+- Adding scripts directly to GameObjects (apart from the main one) is generally a bad idea, at least in my opinion. It just ends up as a weird form of visual scripting.
+- I also think the scene editor should be kept as a map/level editor with spawning and logic left to one or a few scripts placed on a dedicated script holding empty object. Though it can also be useful when prototyping, or you know, doing a game jam. It is large part preference when to use it and my answer to it might be bad too.
+* Open the script in monodevelop which comes with unity. Scripts will open in it by default if you open them from unity.
+- In my experience monodevelop is shit but there are more or less hacky ways of swapping it for something else.
+
