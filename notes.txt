@@ -25,3 +25,6 @@
 * Open the script in monodevelop which comes with unity. Scripts will open in it by default if you open them from unity.
 - In my experience monodevelop is shit but there are more or less hacky ways of swapping it for something else.
 - Please excuse the code formatting, it's monodevelop default and changing it is not close to fun in a better editor.
+- So I created this project as a 2d project but that only sets a couple of defaults, otherwise it is the same as a 3d project. If you press the 2d button at the top of the scene view you can view the 2d scene in 3d.
+- Most differences between 2/3d is in how you create the game. While every base Gameobject needs a sprite in 2d, the 3d equivalent is a model with a material/texture. And when adding physics components they have to be from the regular Physics menu instead of the 2d Physics menu. They act different and can't interact with one another but are similar in many ways.
+- Check out the asset store, especially anything published by Unity Technologies. Lots of free stuff including stuff like prebuilt 3d character controllers. Note that you're only allowed to use this if you enter the jam and not the compo. Speaking of rules, you should read them http://ludumdare.com/compo/rules/
