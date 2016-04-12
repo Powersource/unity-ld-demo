@@ -5,11 +5,14 @@ public class GameController : MonoBehaviour {
 
 	GameObject player;
 	Rigidbody2D playerRigidbody;
-	// Declaring this as public so I can change it in the editor
+	// Declaring this public will let us change the value in the editor
 	// Warning! Don't set the value in here if you do that.
-	// Then if you change it in the editor it's a pain to get
-	// back control of it. Set it in the Start method instead
-	public int speedConstant;
+	// If you do that and change it in the editor (outside of play mode) you have to right click
+	// the script component and click reset to get back to the value you set in the script.
+	// Set it in the Start method instead.
+	// The range tag will give us a slider to more easily change it.
+	[Range(0f, 25f)]
+	public float speedConstant;
 
 	// Use this for initialization
 	void Start () {
@@ -18,8 +21,10 @@ public class GameController : MonoBehaviour {
 		// yourself using it outside of initialization you're
 		// probably doing something wrong.
 		player = GameObject.Find ("player");
+		// Getting and storing the player's Rigidbody2D component
 		playerRigidbody = player.GetComponent<Rigidbody2D> ();
-		speedConstant = 10;
+		// Assign the constant a value
+		speedConstant = 5f;
 	}
 	
 	// Update is called once per frame
@@ -49,18 +54,29 @@ public class GameController : MonoBehaviour {
 		// Edit->Project Settings->Input
 		// There are also many other interesting things in the project settings.
 		float horizontalInputDir = Input.GetAxisRaw ("Horizontal");
-		// Create a new Vector2 object (2-dimensional vector)
-		// with our horizontal input on the x-axis and the current
-		// y-velocity on the y-axis
-		Vector2 direction = new Vector2 (horizontalInputDir * speedConstant, playerRigidbody.velocity.y);
-		// Set the player GameObject's velocity in the direction
-		// of travel                             //times the time since the last time we moved it.
-		// And yes java people, we are multiplying an object.
-		playerRigidbody.velocity = direction;
+		// Multiply the input direction by a constant to get a more useable speed.
+		float horizontalSpeed = horizontalInputDir * speedConstant;
+		// Set the player rigidbody's x velocity to the one determined by the input
+		// and keep the y velocity. (we can't change the x velocity directly)
+		playerRigidbody.velocity = new Vector2 (horizontalSpeed, playerRigidbody.velocity.y);
 
-		// Then we make the player able to jump
+		// Then we make the player able to jump.
 		// Saves the vertical input i.e. up/down. Up is positive.
 		float verticalInputDir = Input.GetAxisRaw ("Vertical");
-
+		// When working with layers in unity you have to use bitmasks.
+		// NameToLayer returns the position of the mentioned layer and
+		// then we shift the 1 that many positions to the left to "select" it.
+		// In this instance nothing much happens since Default's position is 0.
+		// We could also simply set the mask to int.MaxValue to select every layer.
+		int defaultLayer = 1 << LayerMask.NameToLayer ("Default");
+		// Check if I'm pressing up AND the player's collider is touching the default layer.
+		// Try standing next to a wall and jump. You'll see that this solution isn't perfect.
+		// It could be improved by using a raycast under the player for standing-on-ground
+		// detection.
+		if (verticalInputDir > 0 && playerRigidbody.IsTouchingLayers(defaultLayer)) {
+			// Give the player some upward momentum. The speedConstant is
+			// arbitrary here but worked out fine.
+			playerRigidbody.velocity += Vector2.up * speedConstant;
+		}
 	}
 }
