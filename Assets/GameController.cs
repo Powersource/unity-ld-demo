@@ -4,6 +4,12 @@ using System.Collections;
 public class GameController : MonoBehaviour {
 
 	GameObject player;
+	Rigidbody2D playerRigidbody;
+	// Declaring this as public so I can change it in the editor
+	// Warning! Don't set the value in here if you do that.
+	// Then if you change it in the editor it's a pain to get
+	// back control of it. Set it in the Start method instead
+	public int speedConstant;
 
 	// Use this for initialization
 	void Start () {
@@ -12,6 +18,8 @@ public class GameController : MonoBehaviour {
 		// yourself using it outside of initialization you're
 		// probably doing something wrong.
 		player = GameObject.Find ("player");
+		playerRigidbody = player.GetComponent<Rigidbody2D> ();
+		speedConstant = 10;
 	}
 	
 	// Update is called once per frame
@@ -29,9 +37,11 @@ public class GameController : MonoBehaviour {
 		// Simple debug messages. Note that they can lag your game in
 		// large quantities (not fun to debug (especially when it
 		// causes unity to crash in the middle of it)).
-		Debug.Log("Player position: " + player.transform.position.ToString());
+		Debug.Log ("Player position: " + player.transform.position);
+
+		// First we make the player able to walk right and left.
 		// There are several ways to read input in unity but the GetAxis methods
-		// are absolutely the simplest and most effective. This reads from both
+		// are absolutely the simplest and most effective. This line reads from both
 		// a/d/left/right as well as the left stick on a controller and when
 		// people launch your game they get a little pre-built options menu
 		// where they can set up their controls.
@@ -40,12 +50,17 @@ public class GameController : MonoBehaviour {
 		// There are also many other interesting things in the project settings.
 		float horizontalInputDir = Input.GetAxisRaw ("Horizontal");
 		// Create a new Vector2 object (2-dimensional vector)
-		// with our horizontal input on the x-axis
-		Vector2 direction = new Vector2 (horizontalInputDir, 0);
-		// Translate (move) the player GameObject in the direction
-		// of travel times the time since the last time we moved it.
-		// Here you could also multiply by e.g. a speed variable.
+		// with our horizontal input on the x-axis and the current
+		// y-velocity on the y-axis
+		Vector2 direction = new Vector2 (horizontalInputDir * speedConstant, playerRigidbody.velocity.y);
+		// Set the player GameObject's velocity in the direction
+		// of travel                             //times the time since the last time we moved it.
 		// And yes java people, we are multiplying an object.
-		player.transform.Translate (Time.deltaTime * direction);
+		playerRigidbody.velocity = direction;
+
+		// Then we make the player able to jump
+		// Saves the vertical input i.e. up/down. Up is positive.
+		float verticalInputDir = Input.GetAxisRaw ("Vertical");
+
 	}
 }
