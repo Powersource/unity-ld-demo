@@ -4,7 +4,8 @@
 * Create a 2d-project
 * Make sure it's actually 2d or else just recreate it
 * Import a spritesheet
-* Split it (16x16 with 1 padding for me)
+* Set its mode to multiple
+* Go into the sprite editor and split it (16x16 with 1 padding for me)
 * Remove anisotropic filtering if it's low-res i.e. bilinear->point
 * Set pixels per unit to 16. 1 unit is intended to be rougly one meter. It's not required but stuff will generally be easier if you set this value with that in mind.
 * Drag a floor sprite into the scene, stretch its width
@@ -18,7 +19,7 @@
 * Try pressing the play button, your character should land on the static ground
 * Go back into the scene view while the game is running. Drag the player around.
 * Stop the game
-- Notice that the player position gets reset when you stop the game. Very very common mistake to actually change stuff you want to keep while playing. There are ways of making the editor change colors more dramatically when playing.
+- Notice that the player position gets reset when you stop the game. A very very common mistake to actually change stuff you want to keep while playing. If you want the editor to change colors when in play mode, go to Edit->Preferences->Colors and change the Playmode tint.
 * Add a script component to eg. the Main Camera. See the repo for final code with comments.
 - Do it in c#. Especially if you've ever coded in java, it will be easy to make the shift and you will realize that c# is a better language anyway. This js might look like the js you're used to but you can't exactly import jquery.
 - Adding scripts directly to GameObjects (apart from the main one) is generally a bad idea, at least in my opinion. It just ends up as a weird form of visual scripting.
@@ -27,6 +28,13 @@
 - In my experience monodevelop is shit but there are more or less hacky ways of swapping it for something else.
 - Please excuse the code formatting, it's monodevelop default and changing it is not close to fun in a better editor.
 * Drag a sprite into the scene to serve as a platform to jump on and give it a Box collider 2D.
-- So I created this project as a 2d project but that only sets a couple of defaults, otherwise it is the same as a 3d project. If you press the 2d button at the top of the scene view you can view the 2d scene in 3d.
-- Most differences between 2/3d is in how you create the game. While every base Gameobject needs a sprite in 2d, the 3d equivalent is a model with a material/texture. And when adding physics components they have to be from the regular Physics menu instead of the 2d Physics menu. They act different and can't interact with one another but are similar in many ways.
+
+Other stuff to try, in no (too) particular order:
+- Right now the player is able to jump as long as they are touching ground or walls, having an interesting effect when spam-jumping next to walls. Fix this by instead using a raycast to check if something is below the player's feet.
+- Make the player able to shoot stuff. Look up what prefabs are and how to instantiate them.
+- Create an enemy and either place it in the scene or make it a prefab and instantiate it from a script. If the player is able to shoot, the shots should obviously hurt the enemy.
+- Make the camera follow the player. Either reposition it with a script or make it a child of the player object in the Hierarchy window (the cleanest solution).
+- Try creating a project in 3d. I created this project as a 2d project at the start but that only sets a couple of defaults, otherwise it is the same as a 3d project. If you press the 2d button at the top of the scene view you can view the 2d scene in 3d. Most differences between 2/3d is in how you create the game. While every base Gameobject needs a sprite in 2d, the 3d equivalent is a model with a material/texture. And when adding physics components they have to be from the regular Physics menu instead of the 2d Physics menu. They act different and can't interact with one another but are similar in many ways.
 - Check out the asset store, especially anything published by Unity Technologies. Lots of free stuff including stuff like prebuilt 3d character controllers. Note that you're only allowed to use this if you enter the jam and not the compo. Speaking of rules, you should read them http://ludumdare.com/compo/rules/
+- Networking in Unity is very simple compared to many engines. The simplest way to test your implementation I found is to export your game as an executable and play editor vs. executable locally.
+- If you're feeling daring you can try shaders. They require really different thinking and have bad documentation but they're really cool once you get them to work. Also, compute shaders is the closest you get to real world hacking.

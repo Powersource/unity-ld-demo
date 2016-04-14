@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour {
 	// The range tag will give us a slider to more easily change it.
 	[Range(0f, 25f)]
 	public float speedConstant;
+	bool pressedJump;
 
 	// Use this for initialization
 	void Start () {
@@ -30,7 +31,11 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	// Put visual-related stuff in here
 	void Update () {
-	
+		// This becomes true only on the one frame where the
+		// player pressed the "Jump" button i.e. space by default.
+		// It sits in the Update method because it is updated
+		// at the same time as the input.
+		pressedJump = Input.GetButtonDown("Jump");
 	}
 
 	// This is called every physics tick.
@@ -61,21 +66,21 @@ public class GameController : MonoBehaviour {
 		playerRigidbody.velocity = new Vector2 (horizontalSpeed, playerRigidbody.velocity.y);
 
 		// Then we make the player able to jump.
-		// Saves the vertical input i.e. up/down. Up is positive.
-		float verticalInputDir = Input.GetAxisRaw ("Vertical");
 		// When working with layers in unity you have to use bitmasks.
 		// NameToLayer returns the position of the mentioned layer and
 		// then we shift the 1 that many positions to the left to "select" it.
 		// In this instance nothing much happens since Default's position is 0.
 		// We could also simply set the mask to int.MaxValue to select every layer.
 		int defaultLayer = 1 << LayerMask.NameToLayer ("Default");
-		// Check if I'm pressing up AND the player's collider is touching the default layer.
+		// Check if I'm pressing "Jump" (space by default)
+		// AND the player's collider is touching the default layer.
 		// Try standing next to a wall and jump. You'll see that this solution isn't perfect.
 		// It could be improved by using a raycast under the player for standing-on-ground
 		// detection.
-		if (verticalInputDir > 0 && playerRigidbody.IsTouchingLayers(defaultLayer)) {
+		if (pressedJump && playerRigidbody.IsTouchingLayers(defaultLayer)) {
 			// Give the player some upward momentum. The speedConstant is
 			// arbitrary here but worked out fine.
+			// And yes, we are multiplying an object by an int.
 			playerRigidbody.velocity += Vector2.up * speedConstant;
 		}
 	}
